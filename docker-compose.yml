@@ -1,0 +1,31 @@
+version: "3.7"
+
+services:
+   bazel_build:
+     build:
+        context: ./build
+     image: bazel_build
+     volumes:
+        - bazel_cache:/root/.cache/bazel/_bazel_root
+   
+   app:
+     build: 
+        context: ./app 
+     image: application 
+     volumes:
+        - git:/var/gerrit/git
+        - etc:/var/gerrit/etc
+        - db:/var/gerrit/db
+        - index:/var/gerrit/index
+        - cache:/var/gerrit/cache
+     ports:
+        - 8080:8080
+        - 29418:29418
+
+volumes:
+   bazel_cache:
+   git:
+   etc:
+   db:
+   index:
+   cache:
