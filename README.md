@@ -212,5 +212,5 @@ pipeline{
 
 }
 ```
-But for better understanding of commands I transform it to text and show the result of it.
+But for better understanding of commands I transform it to text and show the result of it. Also a small detail that I used docker-agent with installed docker and docker-compose and also I have an another remote host with it too, where I run my application image.
 ![jenkinsfile](images/jenkins.png)
