@@ -17,6 +17,6 @@ ENV HTTPD_LISTEN_URL=
 # Allow incoming traffic
 EXPOSE 29418 8080
 
-VOLUME ["/var/gerrit/bin","/var/gerrit/git", "/var/gerrit/index", "/var/gerrit/cache", "/var/gerrit/db", "/var/gerrit/etc"]
+VOLUME ["/var/gerrit/git", "/var/gerrit/index", "/var/gerrit/cache", "/var/gerrit/db", "/var/gerrit/etc"]
 
 ENTRYPOINT ["/bin/bash","/entrypoint.sh"]

@@ -69,7 +69,7 @@ ENV HTTPD_LISTEN_URL=
 # Allow incoming traffic
 EXPOSE 29418 8080
 
-VOLUME ["/var/gerrit/bin","/var/gerrit/git", "/var/gerrit/index", "/var/gerrit/cache", "/var/gerrit/db", "/var/gerrit/etc"]
+VOLUME ["/var/gerrit/git", "/var/gerrit/index", "/var/gerrit/cache", "/var/gerrit/db", "/var/gerrit/etc"]
 
 ENTRYPOINT ["/bin/bash","/entrypoint.sh"]
 ```
@@ -100,11 +100,12 @@ fi
 
 ```
 These commands are using for initialization our application and configuring some necessary options. And the final step - run the application.
+##### Expose
+And the `EXPOSE 29418 8080` command are necessary for accessing to our application, __8080__ - for WEB UI, __29418__ - for SSH actions with application.
 ##### Volume
 And also you can see a volumes
 ```
-VOLUME ["/var/gerrit/bin",
-        "/var/gerrit/git", 
+VOLUME ["/var/gerrit/git", 
         "/var/gerrit/index", 
         "/var/gerrit/cache", 
         "/var/gerrit/db", 
@@ -115,6 +116,44 @@ These volumes are needed for storing all application data.
 ---
 
 ## Docker-compose
+So for more comfortable work with multiple containers we use docker-compose tool. And there you can see a __docker-compose.yml__
+```
+version: "3.7"
+
+services:
+   bazel_build:
+     build:
+        context: ./build
+     image: bazel_build
+     volumes:
+        - bazel_cache:/root/.cache/bazel/_bazel_root
+   
+   app:
+     build: 
+        context: ./app 
+     image: application 
+     volumes:
+        - git:/var/gerrit/git
+        - etc:/var/gerrit/etc
+        - db:/var/gerrit/db
+        - index:/var/gerrit/index
+        - cache:/var/gerrit/cache
+     ports:
+        - 8080:8080
+        - 29418:29418
+
+volumes:
+   bazel_cache:
+   git:
+   etc:
+   db:
+   index:
+   cache:
+
+```
+So there you can see two services - __bazel_build__ and __app__, it have all necessary options like working directories, name of future images which will be created using `docker-compose build app/bazel_build` command from our Dockerfiles, volumes for storing data, and ports for accessing to application. 
+
+_P.S. docker-compose command we run in our Jenkins_
 
 ---
 
