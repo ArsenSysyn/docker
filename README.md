@@ -27,8 +27,10 @@ VOLUME ["/root/.cache/bazel/_bazel_root"]
 
 CMD ["/bin/bash", "/app/entrypoint.sh"]
 ```
-###### Work directory and install needed tools
-As a work directory we use __/app__ directory which is storing in our repository and copy from them an __entrypoint.sh__ script as an entrypoint step in our image. And the `RUN` step for installing all needed tools for build. 
+
+##### Work directory and install necessary tools
+
+As a work directory we use __/app__ directory which is storing in our repository and copy from them an __entrypoint.sh__ script as an entrypoint step in our image. And the `RUN` step for installing all necessary tools for build. 
 ##### Entrypoint
 There you can see an __entrypoint.sh__ script there
 ```
