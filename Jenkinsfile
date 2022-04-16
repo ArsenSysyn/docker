@@ -1,7 +1,11 @@
 pipeline{
 
   agent {label 'arsen'}
-
+  
+  environment {
+     IP_REMOTE_HOST='10.26.0.246'
+  
+  }
 
   stages {
 
@@ -25,12 +29,12 @@ pipeline{
     stage('Deploy application to remote host') {
 
       steps {
-      sh 'scp application.tar root@10.26.0.246:/root/application.tar'
-      sh 'ssh root@10.26.0.246 docker load -i /root/application.tar'
-      sh 'ssh root@10.26.0.246 docker ps -f name=docker_app_1 -q | xargs --no-run-if-empty docker container stop'
-      sh 'ssh root@10.26.0.246 docker container ls -a -fname=docker_app_1 -q | xargs -r docker container rm'
+        sh 'scp application.tar root@${IP_REMOTE_HOST}:/root/application.tar'
+      sh 'ssh root@${IP_REMOTE_HOST} docker load -i /root/application.tar'
+      sh 'ssh root@${IP_REMOTE_HOST} docker ps -f name=docker_app_1 -q | xargs --no-run-if-empty docker container stop'
+      sh 'ssh root@${IP_REMOTE_HOST} docker container ls -a -fname=docker_app_1 -q | xargs -r docker container rm'
       
-          sh 'DOCKER_HOST=ssh://root@10.26.0.246 docker-compose -f docker/docker-compose.yml up -d app'
+          sh 'DOCKER_HOST=ssh://root@${IP_REMOTE_HOST} docker-compose -f docker/docker-compose.yml up -d app'
       }
     }
 
